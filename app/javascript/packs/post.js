@@ -1,0 +1,1 @@
+console.log('Inside post.js');

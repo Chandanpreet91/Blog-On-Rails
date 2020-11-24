@@ -1,0 +1,17 @@
+<div class='row'>
+  <div class='col-2'>
+  </div>
+
+  <div class='col-10'>
+    <div class='list-group'>
+      <% @posts.each do |post| %>
+        <%= link_to post do %>
+          <li class='list-group-item'>
+            <p><span class='badge badge-light'><%= post.id %></span> <%= post.title %></p>
+            <small>Last Updated: <%= time_ago_in_words post.updated_at %></small>
+          </li>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div> 
