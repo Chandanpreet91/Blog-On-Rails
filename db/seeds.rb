@@ -5,17 +5,55 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-
-Post.destroy_all
+Comment.delete_all
+Post.delete_all
+User.delete_all
 
 NUM_OF_POSTS = 100
+NUM_USERS = 10
+PASSWORD = 'supersecret'
+
+
+super_user = User.create(
+    first_name: 'Jon',
+    last_name: 'Snow',
+    email: 'js@winterfell.gov',
+    password: PASSWORD
+)
+
+NUM_USERS.times do 
+        first_name = Faker::Name.first_name
+        last_name = Faker::Name.last_name
+        User.create(
+            first_name: first_name,
+            last_name: last_name,
+            email: "#{first_name.downcase}.#{last_name.downcase}@example.com",
+            password: PASSWORD
+        )
+end
+
+users = User.all 
 
 NUM_OF_POSTS.times do 
-    Post.create(
+    p = Post.create(
        title: Faker::Job.position,
-       body: Faker::ChuckNorris.fact 
+       body: Faker::ChuckNorris.fact,
+       user: users.sample
     )
+    if p.valid?
+        p.comments = rand(0..15).times.map do 
+            Comment.new(
+                body: Faker::GreekPhilosophers.quote,
+                user: users.sample
+                )
+        end
+    end
 end
 
 posts = Post.all 
-puts Cowsay.say("Generated #{posts.count} posts", :beavis)
+comments = Comment.all 
+puts Cowsay.say("Generated #{posts.count} posts", :stegosaurus)
+puts Cowsay.say("Generated #{comments.count} comments", :tux)
+puts Cowsay.say("Generated #{users.count} users", :frogs)
+
+puts "Login with #{super_user.email} and password: #{PASSWORD}"
