@@ -7,6 +7,10 @@ class Ability
     # Define abilities for the passed in user here. For example:
     #
     user ||= User.new # guest user (not logged in)
+    
+if user.is_admin?
+      can :manage,:all 
+    end
     #   if user.admin?
     #     can :manage, :all
     #   else
@@ -33,8 +37,14 @@ class Ability
 
     alias_action :create, :read, :update, :destroy, to: :crud
 
-    can :crud, User do |a_user|
-      user == a_user
+    can(:crud, User) do |user|
+     user == user
+    end
+    can(:crud, Post)do |post|
+    user==post.user
+    end
+    can(:crud, Comment) do |comment|
+      user==comment.user
     end
   end
 end

@@ -37,23 +37,21 @@ class UsersController < ApplicationController
     end
     
     def password_update
-        puts "=========================="
-        puts params[:user][:current_password]
         if @user&.authenticate(params[:user][:current_password])
-          if @user.update user_params
+            if @user.update user_params
             # if we use new_password and new_password_confirmation
             # password: params[:user][:new_password], 
             # password_confirmation: params[:user][:new_password_confirmation]
     
-            flash[:success] = "Password updated!"
-            redirect_to root_path
-          else
-            flash[:danger] = @user.errors.full_messages.join(", ")
-            redirect_to edit_password_path(@user)
-          end
+              flash[:success] = "Password updated!"
+              redirect_to root_path
+            else
+              flash[:danger] = @user.errors.full_messages.join(", ")
+              redirect_to edit_password_path(@user)
+            end
         else
-          flash[:danger] = "You've entered an invalid current password"
-          redirect_to edit_password_path(@user)
+             flash[:danger] = "You've entered an invalid current password"
+             redirect_to edit_password_path(@user)
         end
     
       
