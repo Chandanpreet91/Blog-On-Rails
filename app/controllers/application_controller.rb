@@ -1,9 +1,10 @@
 class ApplicationController < ActionController::Base
-
-    
+ 
+  private   
     def current_user
       if session[:user_id].present?
        @current_user ||= User.find_by_id session[:user_id]
+      end
     end
     helper_method :current_user
     
@@ -15,7 +16,10 @@ class ApplicationController < ActionController::Base
   
    
     def authenticate_user!
-      redirect_to new_session_path, notice: "Please sign in" unless user_signed_in?
+      unless user_signed_in?
+       flash[:danger] = "Please sign in"
+      redirect_to new_sessions_path
+      end
     end
     helper_method :authenticate_user!
   

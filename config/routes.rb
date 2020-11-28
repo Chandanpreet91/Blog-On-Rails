@@ -9,5 +9,10 @@ Rails.application.routes.draw do
    resources :users, only: [:new, :create]
 
    resource :sessions, only: [:new, :destroy, :create]
+  
+   get '/sign_up', to: "users#new"
+   resources :users, only: [:create, :edit, :update, :destroy]
 
+   get "/users/:id/change_password", { to: "users#password_edit", as: "edit_password" }
+   patch "/users/:id/change_password", { to: "users#password_update", as: "update_password" }
 end 

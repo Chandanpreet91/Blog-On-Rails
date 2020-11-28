@@ -11,19 +11,37 @@
   </head>
 
   <body>
-    <%= flash[:notice] || flash[:alert] %>
+      
     
     <nav class="navbar navbar-expand-light bg-light">
     <%= link_to 'Blog On Rails', posts_path %>
- <div class="d-flex flex-row text-dark">
-   <%= link_to 'Home', posts_path %>
-   |
-    <%= link_to 'New Post', new_post_path %></li>
+    <div class="d-flex flex-row text-dark">
+    <%= link_to 'Home', posts_path , class: 'btn btn-success nav-item'%>
+    
+    <%= link_to 'New Post', new_post_path , class: 'btn btn-success nav-item'%></li>
+    
+    <% if user_signed_in? %>
+      <span class='text-muted mr-3'>Hello, 
+          <%= link_to "#{current_user.full_name}", edit_user_path(current_user) %>
+      </span>
+        <%= link_to "Log Out", sessions_path, method: :delete, class: 'btn btn-danger' %>
+      <% else %>
+        
+        <%= link_to "Log In", new_sessions_path, class: 'btn btn-success nav-item' %>
+        
+        <%= link_to "Sign Up", sign_up_path, class: 'btn btn-success nav-item' %>
+      <% end %>
     </div>
  
    </nav>
 
-    <div class='container'>
+   <div class='container'>
+
+    <% flash.each do |type, message| %>
+      <div class= "bg-<%= type %> p-3 rounded mb-2 shadow-sm">
+        <%= message %>  
+      </div>
+    <% end %>
       <%= yield %>
     </div>
   </body>
